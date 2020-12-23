@@ -1,8 +1,17 @@
 /* global bgapp, match */
 {
-    //TODO-KL response vs request
     bgapp.makeHeaderHandler = function(type) {
-        return function(details) {
+        return function (details) {
+            if (details.tabId > -1 && type === "response" && details.statusCode === 404) { 
+                let tabUrl = bgapp.tabUrlTracker.getUrlFromId(details.tabId);
+                if (details.type === "main_frame") {
+                    // a new tab must have just been created.
+                    tabUrl = details.url;
+                }
+                if (tabUrl) {
+                    return bgapp.handleRequest(details.url, tabUrl, details.tabId, details.requestId, details.statusCode);
+                }
+            }
             const headers = details[type + "Headers"];
             if (details.tabId > -1 && headers) {
                 let tabUrl = bgapp.tabUrlTracker.getUrlFromId(details.tabId);
@@ -51,12 +60,11 @@
         }
         return ans;
     };
-    //TODO-KL
+
     const processRule = function(ruleObj, type, requestUrl, tabUrl, headers, tabId) {
         const headerObjToReturn = {};
         const headerObjToReturnKey = type + "Headers";
         headerObjToReturn[headerObjToReturnKey] = headers;
-        //TODO-KL
         if (ruleObj.on && ruleObj.type === "headerRule" && match(ruleObj.match, requestUrl).matched) {
             const rulesStr = ruleObj[type + "Rules"];
             bgapp.util.logOnTab(tabId, "Header Rule Matched: " + requestUrl +
@@ -88,7 +96,7 @@
             return headerObjToReturn;
         }
     };
-    //TODO-KL
+
     const processTabGroup = function(domainObj, type, requestUrl, tabUrl, headers, tabId) {
         const headerObjToReturn = {};
         const headerObjToReturnKey = type + "Headers";
@@ -105,14 +113,13 @@
         }
         return headerObjToReturn;
     };
-    //TODO-KL
+    
     const handleHeaders = function(type, requestUrl, tabUrl, headers, tabId) {
         const headerObjToReturn = {};
         const headerObjToReturnKey = type + "Headers";
         headerObjToReturn[headerObjToReturnKey] = headers;
         for (const key in bgapp.ruleDomains) {
             const domainObj = bgapp.ruleDomains[key];
-            //TODO-KL
             return processTabGroup(domainObj, type, requestUrl, tabUrl, headers, tabId);
         }
         return headerObjToReturn;

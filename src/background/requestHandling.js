@@ -27,7 +27,7 @@
         };
     };
 
-    bgapp.handleRequest = function(requestUrl, tabUrl, tabId, requestId) {
+    bgapp.handleRequest = function(requestUrl, tabUrl, tabId, requestId, statusCode) {
         for (const key in bgapp.ruleDomains) {
             const domainObj = bgapp.ruleDomains[key];
             if (domainObj.on && match(domainObj.matchUrl, tabUrl).matched) {
@@ -35,7 +35,7 @@
                 for (let x = 0, len = rules.length; x < len; ++x) {
                     const ruleObj = rules[x];
                     if (ruleObj.on) {
-                        if (ruleObj.type === "normalOverride") {
+                        if (ruleObj.type === "normalOverride" && (typeof ruleObj.all === "undefined" || ruleObj.all === true || (statusCode === 404))) {
                             const matchedObj = match(ruleObj.match, requestUrl);
                             const newUrl = matchReplace(matchedObj, ruleObj.replace, requestUrl);
                             if (matchedObj.matched) {
