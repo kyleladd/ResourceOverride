@@ -12,7 +12,9 @@
         const override = util.instanceTemplate(ui.overrideTemplate);
         const matchInput = override.find(".matchInput");
         const replaceInput = override.find(".replaceInput");
+        // was const ruleOnOff = override.find(".ruleOnOff");
         const ruleOnOff = override.find(".onoffswitch");
+        const allOr404Only = override.find(".allOr404Only");
         const deleteBtn = override.find(".sym-btn");
 
         matchInput.val(savedData.match || "");
@@ -20,6 +22,7 @@
         util.makeFieldRequired(matchInput);
         util.makeFieldRequired(replaceInput);
         ruleOnOff[0].isOn = savedData.on === false ? false : true;
+        allOr404Only[0].isAll = savedData.all === false ? false : true;
 
         if (savedData.on === false) {
             override.addClass("disabled");
@@ -47,6 +50,10 @@
         replaceInput.on("keyup", saveFunc);
         ruleOnOff.on("click change", function() {
             override.toggleClass("disabled", !ruleOnOff[0].isOn);
+            saveFunc();
+        });
+        allOr404Only.on("click change", function() {
+            override.toggleClass("disabled", !allOr404Only[0].isAll);
             saveFunc();
         });
 

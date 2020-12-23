@@ -15,6 +15,10 @@
         if (switchDiv) {
             switchDiv.appendChild(app.createOnOffSwitch());
         }
+        const notFoundSwitchDiv = newDom.querySelector(".notFoundSwitch");
+        if (notFoundSwitchDiv) {
+            notFoundSwitchDiv.appendChild(app.create404Switch());
+        }
         return $(newDom);
     };
 

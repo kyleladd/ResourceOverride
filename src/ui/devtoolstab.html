@@ -21,6 +21,19 @@
     </div>
 </template>
 
+<template id="notFoundSwitchTemplate">
+    <div class="allOr404Only">
+        <input type="checkbox" class="onoffswitch-checkbox" checked>
+        <label class="onoffswitch-label">
+            <span class="onoffswitch-inner">
+                <div class="onoffswitch-on">All</div>
+                <div class="onoffswitch-off">404s</div>
+            </span>
+            <span class="onoffswitch-switch"></span>
+        </label>
+    </div>
+</template>
+
 <template id="domainTemplate">
     <div class="domainContainer">
         <div class="domainHeader">
@@ -61,6 +74,10 @@
         <div class="rule">
             <input type="input" class="replaceInput" placeholder="Replace URL">
         </div>
+        <!-- TODO-KL-->
+        <div class="notFoundSwitch">
+        </div>
+        <!--<on-off-switch class="allOr404Only" onText="All" offText="404s"></on-off-switch>-->
         <div class="switch"></div>
         <div class="delete">
             <button class="btn sym-btn">&#215</button>
@@ -365,6 +382,7 @@ The devtools tab has more features that aren't avilable on the options page. <a 
 <script src="init.js"></script>
 <script src="util.js"></script>
 <script src="onOffSwitch.js"></script>
+<script src="404Switch.js"></script>
 
 <script src="headers.js"></script>
 <script src="moveableRules.js"></script>

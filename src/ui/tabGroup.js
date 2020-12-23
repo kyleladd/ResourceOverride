@@ -60,7 +60,8 @@
                     type: "normalOverride",
                     match: $el.find(".matchInput").val(),
                     replace: $el.find(".replaceInput").val(),
-                    on: $el.find(".onoffswitch")[0].isOn
+                    on: $el.find(".onoffswitch")[0].isOn,
+                    all:$el.find(".allOr404Only")[0].isAll
                 });
             } else if ($el.hasClass("fileOverride")) {
                 rules.push({
@@ -106,6 +107,7 @@
         const addRuleBtn = domain.find(".addRuleBtn");
         const domainMatchInput = domain.find(".domainMatchInput");
         const onOffBtn = domain.find(".onoffswitch");
+        const allOr404Only = domain.find(".allOr404Only");
         const deleteBtn = domain.find(".deleteBtn");
         const rules = savedData.rules || [];
 
@@ -149,6 +151,11 @@
         domainMatchInput.on("keyup", saveFunc);
         onOffBtn.on("click change", function() {
             domain.toggleClass("disabled", !onOffBtn[0].isOn);
+            saveFunc();
+        });
+
+        allOr404Only.on("click change", function() {
+            override.toggleClass("disabled", !allOr404Only[0].isAll);
             saveFunc();
         });
 
